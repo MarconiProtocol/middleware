@@ -1,0 +1,24 @@
+{
+  "name": "middleware",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://git.marconi.org/marconi/middleware.git"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "btoa": "^1.2.1",
+    "express": "^4.16.3",
+    "jayson": "^2.0.6",
+    "pkg": "^4.3.7",
+    "web3": "^1.0.0-beta.35",
+    "xmlhttprequest": "^1.8.0"
+  }
+}
