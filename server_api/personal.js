@@ -1,3 +1,4 @@
+const logger = require('../src/utils/logger.js')
 const marconiNet = require('../src/marconi_net/marconi_web3js.js')
 const server_consts = require('./consts.js')
 
@@ -12,7 +13,7 @@ const Personal_API = {
       .then(function(result) {
         callback(null, result)
       }, function(err) {
-        console.error(err)
+        logger.error(err)
         callback({
           code: server_consts.ERROR_CODE,
           message: err.message

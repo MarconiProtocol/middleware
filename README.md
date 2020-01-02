@@ -31,6 +31,7 @@ The API to interface with the middleware. Subscribers are expected to receive in
 - [getPeers](#getpeers)
 - [getNetworkAdmin](#getnetworkadmin)
 - [getDataJson](#getdatajson)
+- [startNetflow](#startNetflow)
 
 [Marconi-Ethereum](#marconi-ethereum)
 - [eth_getBalance](#eth_getbalance)
@@ -212,7 +213,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0", "id":1, "
 }
 // Result with Transaction Hash
 {
-    "id":"1",
+	"id":"1",
     "jsonrpc":"2.0",
     "result":{
         "transactionHash": "0x2ea4a3cd817a66e62647b68c8ff004807ad75cc66906a49d44d46e752b8d598a"
@@ -293,7 +294,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0", "id":1, "
 Removes a two way peer relationship to a Marconi subnet, relation from both nodes are removed
 
 **Params**  
-[NetworkContractAddress] `STRING` - The address of the network contract to which a relationship will be removed  
+[NetworkContractAddress] `STRING` - The address of the network contract to which a relationship will be removed
 [PeerPubKeyHash] `STRING` - Public key hash of peer #1  
 [OtherPeerPubKeyHash] `STRING` - Public key hash of peer #2  
 [WaitForReceipt] `BOOLEAN` - Whether to wait for transaction to be mined and receipt available (optional, default to false)
@@ -384,10 +385,10 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0", "id":1, "
 ### getPeers 
 Fetch the peers list of a Marconi Subnet
 
-**Params**  
-[NetworkContractAddress] `STRING` - The address of the network contract from which to fetch peers  
+**Params**
+[NetworkContractAddress] `STRING` - The address of the network contract from which to fetch peers
 
-**Result**  
+**Result**
 `String` - A comma delimited string of peers in the Marconi subnet
 
 **Example**
@@ -408,10 +409,10 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0", "id":1, "
 ### getNetworkAdmin
 Get the network admin of a Marconi Subnet
 
-**Params**  
+**Params**
 [NetworkContractAddress] `STRING` - The address of the network contract from which to fetch peers
 
-**Result**  
+**Result**
 DATA 20 Bytes - address of admin who created the network contract
 
 **Example**
@@ -432,10 +433,10 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0", "id":1, "
 ### getDataJSON
 Get the network info in JSON format
 
-**Params**  
+**Params**
 [NetworkContractAddress] `STRING` - The address of the network contract to get JSON data from
 
-**Result**  
+**Result**
 `STRING` - JSON string representation of Network contract data
 
 **Example**
@@ -453,6 +454,32 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0", "id":1, "
 ***
 &nbsp;
 
+### startNetflow
+Start netflow monitoring of marconid instance
+
+**Params**
+[collectorIp] `STRING` - Ip address to send netflow data to
+[collectorPort] `STRING` - Port of running collector on host
+[interface] `STRING` - Interface to monitor with netflow
+[loggingDir] `STRING` - Directory to send local logging to
+
+**Result**
+`BOOL` - JSON bool representation of whether netflow started correctly or not
+
+**Example**
+```
+// Request
+curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0", "id":1, "method": "startNetflow", "params":{"collectorIp":"127.0.0.1", "collectorPort":"9995", "interface":"mb42", "loggingDir":"/opt/marconi/var/log/netflow"}}' 127.0.0.1:28902/api/marconi/v1
+
+// Result
+{
+    "jsonrpc":"2.0",
+    "id":1,
+    "result":"true"
+}
+```
+***
+&nbsp;
 
 ## Marconi-Ethereum
 

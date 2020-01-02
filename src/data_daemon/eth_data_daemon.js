@@ -1,6 +1,8 @@
 const Web3 = require('web3');
+
 const configs = require('../utils/configs.js')
 const Rpc = require('../rpc/rpc.js')
+const logger = require('../utils/logger.js')
 const marconiNet = require('../marconi_net/marconi_web3js.js')
 
 // Use 15 second interval, it is half our expected block time
@@ -25,15 +27,15 @@ function Daemon() {
 function FetchFromEth() {
   subscribers.forEach((subscriber, id, map) => {
     marconiNet.GetPeerInfo(subscriber.networkContractAddress, subscriber.pubKeyHash)
-      .then(function(peerInfo) {
-        // peerInfo is a 5 element array: [NetworkId, pubKeyHash, peerRelations, IP, active]
-        console.log("Updating and Notifying Subscriber " + id)
-        UpdateAndNotifySubscriber(id, subscriber, peerInfo[2], peerInfo[3], peerInfo[4])
-      })
-      .catch(function(error) {
-        console.error(error)
-        UpdateAndNotifySubscriber(id, subscriber, "", "", false)
-      })
+        .then(function(peerInfo) {
+          // peerInfo is a 5 element array: [NetworkId, pubKeyHash, peerRelations, IP, active]
+          logger.info("Updating and Notifying Subscriber " + id)
+          UpdateAndNotifySubscriber(id, subscriber, peerInfo[2], peerInfo[3], peerInfo[4], false)
+        })
+        .catch(function(error) {
+          logger.error(error)
+          UpdateAndNotifySubscriber(id, subscriber, "", "", false, true)
+        })
   })
 }
 
@@ -48,26 +50,30 @@ function Subscribe(subscriberId, port, _networkContractAddress, _pubKeyHash, res
     peers: null
   }
   subscribers.set(subscriberId, subscriberObj)
-  console.log("subscribed peer:")
-  console.log(subscriberObj)
+  logger.info('subscribed peer: %o', subscriberObj)
 }
 
 // Remove a subscriber from the subscribed list
 function Unsubscribe(subscriberId, response) {
   var result = subscribers.delete(subscriberId)
   if (result) {
-    console.log("un-subscribed subscriber with id " + subscriberId)
+    logger.info("un-subscribed subscriber with id " + subscriberId)
   }
 }
 
 // Update our local cache of the subscribers peers list,
 // Notify the peer through an http rpc call
-function UpdateAndNotifySubscriber(subscriberId, subscriber, peers, ip, active) {
+function UpdateAndNotifySubscriber(subscriberId, subscriber, peers, ip, active, error) {
   subscribers.set(subscriberId, subscriber)
   // TODO: if rpc fails, we need to make sure on the next update, the peer is updated
-  let payload = peers + ";" + ip + ";" + active // TODO we can pass payload in JSON later
-  Rpc.SendRPC(subscriber.rpcPort, "rpcUpdatePeers", payload, () => {
-    console.log("Sent notification RPC to subscriber " + subscriberId + " at " + subscriber.rpcPort)
+  let updatePeersArgs = {
+    PeersList:peers,
+    DHCP: ip,
+    Active: active,
+    ErrorCode: error
+  };
+  Rpc.SendRPC(24802, "BlockchainRPC.UpdatePeers", updatePeersArgs, (args) => {
+    logger.info("Sent notification RPC to subscriber " + subscriberId + " at " + subscriber.rpcPort)
   })
 }
 

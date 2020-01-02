@@ -1,5 +1,6 @@
 const ethDataDaemon = require('../src/data_daemon/eth_data_daemon.js')
 const server_consts = require('./consts.js')
+const configs = require('../src/utils/configs.js')
 
 const Middleware_API = {
   /*
@@ -24,6 +25,20 @@ const Middleware_API = {
       args["Id"]
     )
     callback(null, "Unsubscribed")
+  },
+  /*
+    Update UserAddress in user_conf.json
+  */
+  updateUserAddress: function (args, callback) {
+    try {
+      configs.UpdateUserAddress(args[0])
+      callback(null, true)
+    } catch (err) {
+      callback({
+        code: server_consts.ERROR_CODE,
+        message: err.message
+      })
+    }
   }
 }
 

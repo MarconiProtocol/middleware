@@ -1,4 +1,5 @@
 const marconiNet = require('../src/marconi_net/marconi_web3js.js')
+const logger = require('../src/utils/logger.js')
 const server_consts = require('./consts.js')
 
 const Eth_API = {
@@ -11,7 +12,7 @@ const Eth_API = {
       .then(function(result) {
         callback(null, "0x" + parseInt(result).toString(16))
       }, function(err) {
-        console.error(err)
+        logger.error(err)
         callback({
           code: server_consts.ERROR_CODE,
           message: err.message
@@ -26,7 +27,7 @@ const Eth_API = {
       .then(function(result) {
         callback(null, "0x" + result.toString(16))
       }, function(err) {
-        console.error(err)
+        logger.error(err)
         callback({
           code: server_consts.ERROR_CODE,
           message: err.message
@@ -42,7 +43,7 @@ const Eth_API = {
       .then(function(result) {
         callback(null, result.toString())
       }, function(err) {
-        console.error(err)
+        logger.error(err)
         callback({
           code: server_consts.ERROR_CODE,
           message: err.message
@@ -74,7 +75,7 @@ const Eth_API = {
         callback(err, null)
       })
       .catch(function(err) {
-        console.error(err)
+        logger.error(err)
         callback({
           code: server_consts.ERROR_CODE,
           message: err.message
@@ -89,7 +90,7 @@ const Eth_API = {
       .then(function(result) {
         callback(null, result)
       }, function(err) {
-        console.error(err)
+        logger.error(err)
         callback({
           code: server_consts.ERROR_CODE,
           message: err.message
@@ -105,7 +106,7 @@ const Eth_API = {
       .then(function(result) {
         callback(null, result)
       }, function(err) {
-        console.error(err)
+        logger.error(err)
         callback({
           code: server_consts.ERROR_CODE,
           message: err.message

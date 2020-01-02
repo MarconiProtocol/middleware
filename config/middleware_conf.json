@@ -1,13 +1,15 @@
 {
   "meth": {
-    "UserAddress": "0x0000000000000000000000000000000000000000",
-    "NetworkManagerSCAddress": "0x0c41830afd3272705e5c1429ce0665f464529502",
     "RPC_Host": "http://localhost",
     "RPC_Port": 10004,
     "DataDir": "/opt/marconi/etc/meth/datadir",
-    "DefaultGas": 5000000
+    "DefaultGas": 5000000,
+    "NetworkManagerSCAddress": "0xB91DcEc2DD8f99736A91e7555E70bf0b48F65fB6"
   },
   "server": {
     "RPC_Port": 28902
+  },
+  "marconid": {
+    "RPC_Port": 24802
   }
 }
